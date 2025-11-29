@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NotChargeEV - The Future of Electric Driving in India</title>
-    <!-- Load Tailwind CSS from CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <style>
@@ -19,11 +18,30 @@
             background-color: var(--background-color);
             color: #f3f4f6;
         }
+        /* text-neon: text-shadow property removed as requested */
         .text-neon {
             color: var(--accent-color);
-            /* Subtly reduced text shadow for modern look */
-            text-shadow: 0 0 3px var(--accent-color), 0 0 6px var(--accent-color);
+            transition: all 0.5s ease;
         }
+        
+        /* --- Scroll & Hover CSS --- */
+        
+        /* Hover Effect for the target text */
+        .scroll-hover:hover {
+            color: white; /* Text color becomes pure white */
+            text-shadow: none; /* No shadow on hover */
+            transition: all 0.3s ease;
+        }
+
+        /* Scroll Effect: Class added by JS when scrolling starts */
+        .scrolled-text-effect {
+            color: #4b5563; /* Dim gray text when scrolled */
+            text-shadow: none; /* Remove any neon effect on scroll */
+            transition: all 0.5s ease;
+        }
+
+        /* --- END: New Scroll & Hover CSS --- */
+        
         .bg-gradient-electric {
             background: linear-gradient(135deg, #0f172a 0%, #171d3a 100%);
         }
@@ -36,7 +54,7 @@
         }
         /* ICard Modal Styles (Chatbot size) */
         .icard-modal {
-            max-width: 380px; /* Narrower, chatbot-like width */
+            max-width: 380px;
             width: 90%;
             transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
@@ -44,11 +62,28 @@
             background-color: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(5px);
         }
+
+        /* Custom scrollbar for chat window */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar {
+            scrollbar-color: var(--accent-color) #0f172a;
+            scrollbar-width: thin;
+            display: flex; 
+            flex-direction: column;
+        }
     </style>
 </head>
 <body class="min-h-screen antialiased">
 
-    <!-- Navigation Bar -->
     <header class="sticky top-0 z-50 bg-background-color/95 backdrop-blur-sm shadow-lg">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
             <div class="text-2xl font-extrabold text-neon tracking-tight">
@@ -61,32 +96,34 @@
                 <a href="#team" class="text-gray-300 hover:text-accent-color transition duration-150">Our Team</a>
                 <a href="#preorder" class="text-gray-300 hover:text-accent-color transition duration-150">Pre-Order</a>
             </div>
-            <a href="#preorder" class="hidden md:block px-4 py-1.5 text-sm font-medium bg-accent-color text-black rounded-full cta-button">
-                Register Now
-            </a>
-            <!-- Mobile Menu Button -->
+            
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="javascript:void(0)" onclick="openLoginModal()" class="text-gray-300 hover:text-accent-color transition duration-150 text-sm">Login</a>
+                <a href="javascript:void(0)" onclick="openSignupModal()" class="px-4 py-1.5 text-sm font-medium bg-transparent text-white border-2 border-white rounded-full cta-button hover:bg-white hover:text-black">
+                    Sign Up
+                </a>
+            </div>
             <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </nav>
 
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 bg-background-color/90">
             <a href="#hero" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700">Home</a>
             <a href="#problem" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700">The Problem</a>
             <a href="#technology" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700">Technology</a>
             <a href="#team" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700">Our Team</a>
-            <a href="#preorder" class="block w-full text-center px-3 py-2 rounded-md text-base font-medium bg-accent-color text-black cta-button">Register Now</a>
+            <a href="javascript:void(0)" onclick="openLoginModal(); closeMobileMenu();" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700">Login</a>
+            <a href="javascript:void(0)" onclick="openSignupModal(); closeMobileMenu();" class="block w-full text-center px-3 py-2 rounded-md text-base font-medium bg-transparent text-white border-2 border-white cta-button hover:bg-white hover:text-black">Sign Up</a>
         </div>
     </header>
 
     <main>
-        <!-- Hero Section: Vision & Mission -->
         <section id="hero" class="py-20 md:py-32 lg:py-40 text-center bg-background-color relative overflow-hidden border-b border-gray-900">
             <div class="max-w-5xl mx-auto px-4 relative z-10">
                 <p class="text-lg uppercase tracking-widest text-gray-500 mb-4">The Future of Electric Driving</p>
                 <h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight mb-6">
-                    <span class="text-neon block">NotChargeEV:</span>
+                    <span class="text-neon scroll-hover">NotChargeEV:</span>
                     <span class="block mt-2 text-gray-100">India's First, Auto-Recharge EV</span>
                 </h1>
                 <p class="text-xl sm:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto">
@@ -94,10 +131,8 @@
                     <br class="hidden sm:block">
                     Mission: Design, develop, and deliver smart electric cars with Indian innovation and global standards.
                 </p>
-                <!-- CTA Buttons Block (Now only one button) -->
                 <div class="flex justify-center">
-                    <!-- Main CTA -->
-                      <a href="#preorder" class="px-10 py-3.5 text-xl font-semibold bg-transparent text-white border-2 border-accent-color rounded-xl cta-button inline-flex items-center hover:bg-accent-color/10">
+                    <a href="#preorder" class="px-10 py-3.5 text-xl font-semibold bg-transparent text-white border-2 border-accent-color rounded-xl cta-button inline-flex items-center hover:bg-accent-color/10">
                         Join the Revolution
                         <svg class="ml-2 w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L14.25 7m-4.5 10L14.25 7"></path></svg>
                     </a>
@@ -105,27 +140,23 @@
             </div>
         </section>
 
-        <!-- Problem Section -->
         <section id="problem" class="py-16 md:py-24 bg-gradient-electric border-b border-gray-900">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Today's <span class="text-neon">Challenges</span> and Our Goal</h2>
                 
                 <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Problem 1: Fuel & Pollution -->
                     <div class="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-800">
                         <div class="text-4xl text-red-500 mb-4">⛽</div>
                         <h3 class="text-xl font-semibold mb-3">Rising Fuel Prices and Pollution</h3>
                         <p class="text-gray-400">Rising fuel prices make travel expensive, while petrol/diesel vehicles cause major air pollution and health issues.</p>
                     </div>
                     
-                    <!-- Problem 2: High EV Cost -->
                     <div class="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-800">
                         <div class="text-4xl text-yellow-400 mb-4">💰</div>
                         <h3 class="text-xl font-semibold mb-3">Expensive EV Costs</h3>
                         <p class="text-gray-400">Most good-range EVs are too costly, creating a significant barrier for the middle class.</p>
                     </div>
 
-                    <!-- Problem 3: Imported Parts -->
                     <div class="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-800">
                         <div class="text-4xl text-green-400 mb-4">🇮🇳</div>
                         <h3 class="text-xl font-semibold mb-3">Dependence on Imports (Make in India)</h3>
@@ -135,7 +166,6 @@
             </div>
         </section>
 
-        <!-- Solution/Offerings Section (Simplified) -->
         <section class="py-16 md:py-24">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl sm:text-4xl font-bold mb-4">Our <span class="text-neon">Solution</span></h2>
@@ -144,22 +174,18 @@
                 </p>
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Feature 1: Price -->
                     <div class="p-4 rounded-xl bg-gray-900 border border-accent-color/50">
                         <p class="text-5xl font-extrabold text-neon">₹10-15</p>
                         <p class="text-gray-400">Lakh (Expected Price)</p>
                     </div>
-                    <!-- Feature 2: Range -->
                     <div class="p-4 rounded-xl bg-gray-900 border border-accent-color/50">
                         <p class="text-5xl font-extrabold text-neon">∞</p>
                         <p class="text-gray-400">Unlimited Range</p>
                     </div>
-                    <!-- Feature 3: Manufacturing -->
                     <div class="p-4 rounded-xl bg-gray-900 border border-accent-color/50">
                         <p class="text-5xl font-extrabold text-neon">🇮🇳</p>
                         <p class="text-gray-400">Made in India</p>
                     </div>
-                    <!-- Feature 4: Battery -->
                     <div class="p-4 rounded-xl bg-gray-900 border border-accent-color/50">
                         <p class="text-5xl font-extrabold text-neon">LFP</p>
                         <p class="text-gray-400">High-Performance Battery</p>
@@ -169,7 +195,6 @@
         </section>
 
 
-        <!-- Technology Deep Dive Section (Simplified) -->
         <section id="technology" class="py-16 md:py-24 bg-gradient-electric border-t border-gray-900">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">Our <span class="text-neon">Revolutionary Technology</span></h2>
@@ -177,16 +202,15 @@
                     Automatic Recharge While Driving: Eliminating the plug-in wait.
                 </p>
                 
-                <!-- Diagram Placeholder for the self-charging system -->
                 <div class="max-w-4xl mx-auto mb-12">
-                    [Image of Schematic Diagram of a Self-Charging EV Alternator System]
-                </div>
-                <!-- End Diagram Placeholder -->
+                    
 
+[Image of Schematic Diagram of Self-Charging EV Alternator]
+
+                </div>
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
                     
                     <div class="space-y-8">
-                        <!-- Tech Point 1: Advanced Alternator -->
                         <div class="flex items-start bg-gray-900 p-6 rounded-xl border border-gray-800">
                             <div class="flex-shrink-0 text-3xl text-accent-color mr-4">⚙️</div>
                             <div>
@@ -195,7 +219,6 @@
                             </div>
                         </div>
                         
-                        <!-- Tech Point 2: Efficient Power Management -->
                         <div class="flex items-start bg-gray-900 p-6 rounded-xl border border-gray-800">
                             <div class="flex-shrink-0 text-3xl text-accent-color mr-4">🔋</div>
                             <div>
@@ -204,7 +227,6 @@
                             </div>
                         </div>
 
-                        <!-- Tech Point 3: Smart Charging System -->
                         <div class="flex items-start bg-gray-900 p-6 rounded-xl border border-gray-800">
                             <div class="flex-shrink-0 text-3xl text-accent-color mr-4">🧠</div>
                             <div>
@@ -214,7 +236,6 @@
                         </div>
                     </div>
 
-                    <!-- Technology Use Case / IoT Image Placeholder -->
                     <div class="p-8 bg-gray-950 rounded-xl border border-gray-700 h-full flex flex-col justify-center items-center min-h-[400px]">
                         <h3 class="text-2xl font-bold text-neon mb-4">IoT and AI Integration</h3>
                         <p class="text-center text-gray-400 mb-6">
@@ -226,22 +247,17 @@
             </div>
         </section>
         
-        <!-- Team Section (UPDATED to use JS for rendering and click handler) -->
         <section id="team" class="py-16 md:py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl sm:text-4xl font-bold mb-12">Our <span class="text-neon">Expert Team</span></h2>
 
                 <div id="team-container" class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                    <!-- Team members will be injected here by JavaScript -->
-                </div>
+                    </div>
                 
                 <p class="mt-10 text-gray-500 text-sm">Current Stage: R&D completed, prototype design ready, battery testing ongoing.</p>
             </div>
         </section>
-
-
-        <!-- Pre-Order / CTA Form Section -->
-        <section id="preorder" class="py-16 md:py-24 bg-gray-950 border-t border-accent-color/20">
+<section id="preorder" class="py-16 md:py-24 bg-gray-950 border-t border-accent-color/20">
             <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">
                     Register for Your <span class="text-neon">NotChargeEV</span>
@@ -250,42 +266,55 @@
                     Sign up for the exclusive early access program and receive launch updates for this affordable, auto-recharge EV priced in the ₹10-15 lakh range.
                 </p>
 
-                <!-- Form Section -->
-                <form class="space-y-6 bg-gray-900 p-8 rounded-xl shadow-2xl border border-gray-800">
+               <section id="preorder" class="py-16 md:py-24 bg-gray-950 border-t border-accent-color/20">
+            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">
+                    Register for Your <span class="text-neon">NotChargeEV</span>
+                </h2>
+                <p class="text-center text-gray-400 mb-10">
+                    Sign up for the exclusive early access program and receive launch updates for this affordable, auto-recharge EV priced in the ₹10-15 lakh range.
+                </p>
+
+                <form id="preorder-form" 
+                      action="https://docs.google.com/forms/d/e/1FAIpQLSfh3A9dxsvoCfaICAIQRZrsLeQvphvR691CM5ndLED3uiskvw/formResponse" 
+                      method="POST" 
+                      target="hidden_iframe"
+                      class="space-y-6 bg-gray-900 p-8 rounded-xl shadow-2xl border border-gray-800">
+                        
+                    <p class="text-center text-red-400 text-sm mb-4 font-medium hidden" id="submission-warning">
+                        Submitting... Please wait.
+                    </p>
+
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your Name"
+                        <input type="text" id="name" name="entry.434410983" placeholder="Your Name"
                                class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none" required>
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="you@example.com"
+                        <input type="email" id="email" name="entry.1537551009" placeholder="you@example.com"
                                class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none" required>
                     </div>
                     <div>
                         <label for="city" class="block text-sm font-medium text-gray-300 mb-2">City</label>
-                        <input type="text" id="city" name="city" placeholder="City where you want the EV"
+                        <input type="text" id="city" name="entry.695428521" placeholder="City where you want the EV"
                                class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none">
                     </div>
                     
-                    <!-- NEW BOX WRAPPER around the button -->
                     <div class="p-0.5 rounded-xl bg-gradient-to-r from-accent-color to-cyan-400 shadow-2xl shadow-accent-color/50 transform transition duration-300 hover:scale-[1.01]">
-                        <button type="submit" class="w-full px-4 py-3 text-lg font-semibold bg-gray-900 text-accent-color rounded-xl cta-button hover:bg-gray-800">
-                            Join the Pre-Order List
+                        <button type="submit" id="submit-button" class="w-full px-4 py-3 text-lg font-semibold bg-gray-900 text-accent-color rounded-xl cta-button hover:bg-gray-800">
+                            Submit Registration
                         </button>
                     </div>
-                    <!-- END NEW BOX WRAPPER -->
                     
-                    <p id="submission-message" class="text-center text-sm text-green-400 hidden mt-4">
-                        Thank you! Your interest has been registered.
-                    </p>
+                    <div id="form-message-area" class="text-center mt-4"></div>
+                    
                 </form>
 
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-background-color py-10 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
             <div class="text-2xl font-extrabold text-neon tracking-tight mb-4">
@@ -306,52 +335,89 @@
         </div>
     </footer>
 
-    <!-- PROFILE ICard MODAL (Chatbot/Narrow Size) -->
-    <div id="profile-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-[100] opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeProfileModal()">
-        <div id="modal-content" class="icard-modal bg-gray-900 rounded-2xl shadow-2xl border border-gray-700 p-6 relative transform translate-y-4" onclick="event.stopPropagation()">
-            
-            <!-- Close Button (Icon) -->
-            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-gray-400 hover:text-accent-color transition duration-150">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            
-            <div class="flex flex-col items-center pt-4 pb-2">
-                
-                <!-- Profile Image/Placeholder -->
-                <img id="modal-image" 
-                    src="" 
-                    alt="Team Member Profile" 
-                    class="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-4 border-accent-color shadow-lg"
-                    onerror="this.onerror=null; this.src='https://placehold.co/96x96/030712/06b6d4?text='+this.getAttribute('data-initials')">
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" 
+            onload="handleFormSubmission()"></iframe>
 
-                <!-- ICard Details -->
-                <div class="text-center w-full">
-                    <h2 id="modal-name" class="text-3xl font-extrabold text-white mb-1"></h2>
-                    <p id="modal-role" class="text-lg text-accent-color font-semibold mb-4"></p>
-                    
-                    <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 text-left">
-                        <p class="text-sm font-bold text-gray-400 mb-1">Introduction (Bio):</p>
-                        <p id="modal-bio" class="text-base text-gray-300 italic mb-4"></p>
+    <div id="chatbot-container" class="fixed bottom-6 right-6 z-[110]">
 
-                        <div class="flex items-center text-sm text-gray-400">
-                            <svg class="w-4 h-4 mr-2 text-accent-color" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path></svg>
-                            <a id="modal-email" href="" class="text-gray-300 hover:text-accent-color transition duration-150 break-all"></a>
-                        </div>
-                    </div>
-                </div>
+        <button id="chat-toggle-button" onclick="toggleChatbot()" 
+                class="w-16 h-16 bg-accent-color text-black rounded-full shadow-2xl flex items-center justify-center cta-button transform hover:scale-105 transition-all duration-200">
+            <svg id="chat-icon-open" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M12 21v-4M4 4h16a2 2 0 012 2v10a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2z"></path></svg>
+            <svg id="chat-icon-close" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-[300px] sm:w-[350px] bg-gray-900 rounded-xl shadow-2xl border border-gray-700 overflow-hidden transform scale-95 opacity-0 transition-all duration-300 origin-bottom-right">
+            
+            <div class="bg-gray-800 p-3 flex items-center border-b border-gray-700">
+                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                <h3 class="font-semibold text-white">NotChargeEV Assistant <span class="text-xs text-gray-400">(Live)</span></h3>
             </div>
-            
-            <!-- Close Button (Styled like CTA) -->
-            <button onclick="closeProfileModal()" 
-                    class="w-full mt-6 px-6 py-2.5 text-base font-semibold bg-transparent text-white border-2 border-accent-color rounded-xl cta-button inline-flex items-center justify-center hover:bg-accent-color/10">
-                Close Profile
-                <!-- Using a circle-x icon for closing/exit -->
-                <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            </button>
+
+            <div id="chat-messages" class="h-80 p-4 space-y-4 overflow-y-auto custom-scrollbar flex flex-col">
+                </div>
+
+            <div class="p-3 border-t border-gray-700 bg-gray-800">
+                <form id="chat-form" class="flex">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." 
+                           class="flex-grow px-3 py-2 bg-gray-700 text-white rounded-l-lg border border-gray-600 focus:outline-none focus:border-accent-color text-sm" required>
+                    <button type="submit" 
+                            class="bg-accent-color text-black px-4 rounded-r-lg hover:bg-cyan-600 cta-button">
+                        Send
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- JavaScript for Mobile Menu, Mock Form Submission, and Team Modal -->
+    <div id="login-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-[101] opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeLoginModal()">
+        <div class="icard-modal bg-gray-900 rounded-2xl shadow-2xl border border-gray-700 p-6 relative transform translate-y-4" onclick="event.stopPropagation()">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-accent-color transition duration-150">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-3xl font-extrabold text-white text-center mb-6">Log In</h2>
+            <form class="space-y-4">
+                <div><label for="login-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label><input type="email" id="login-email" placeholder="you@example.com" class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none" required></div>
+                <div><label for="login-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label><input type="password" id="login-password" placeholder="Enter your password" class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none" required></div>
+                <button type="submit" class="w-full mt-6 px-4 py-3 text-lg font-semibold bg-accent-color text-black rounded-xl cta-button hover:bg-cyan-600">Login to Account</button>
+            </form>
+            <p class="text-center text-sm text-gray-400 mt-4">Don't have an account? <a href="javascript:void(0)" onclick="switchToSignup()" class="text-accent-color hover:text-white font-semibold">Sign Up</a></p>
+        </div>
+    </div>
+
+    <div id="signup-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-[102] opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSignupModal()">
+        <div class="icard-modal bg-gray-900 rounded-2xl shadow-2xl border border-gray-700 p-6 relative transform translate-y-4" onclick="event.stopPropagation()">
+            <button onclick="closeSignupModal()" class="absolute top-4 right-4 text-gray-400 hover:text-accent-color transition duration-150">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-3xl font-extrabold text-white text-center mb-6">Create Account</h2>
+            <form class="space-y-4">
+                 <div><label for="signup-name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label><input type="text" id="signup-name" placeholder="Your Name" class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none" required></div>
+                <div><label for="signup-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label><input type="email" id="signup-email" placeholder="you@example.com" class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none" required></div>
+                <div><label for="signup-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label><input type="password" id="signup-password" placeholder="Create a password" class="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:border-accent-color focus:ring-1 focus:ring-accent-color outline-none" required></div>
+                <button type="submit" class="w-full mt-6 px-4 py-3 text-lg font-semibold bg-accent-color text-black rounded-xl cta-button hover:bg-cyan-600">Sign Up Now</button>
+            </form>
+            <p class="text-center text-sm text-gray-400 mt-4">Already have an account? <a href="javascript:void(0)" onclick="switchToLogin()" class="text-accent-color hover:text-white font-semibold">Log In</a></p>
+        </div>
+    </div>
+    
+    <div id="profile-modal" class="fixed inset-0 modal-overlay flex items-center justify-center z-[100] opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeProfileModal()">
+        <div id="modal-content" class="icard-modal bg-gray-900 rounded-2xl shadow-2xl border border-gray-700 p-6 relative transform translate-y-4" onclick="event.stopPropagation()">
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-gray-400 hover:text-accent-color transition duration-150">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center">
+                <div id="member-initials" class="w-20 h-20 mx-auto bg-accent-color text-black text-3xl font-bold rounded-full flex items-center justify-center mb-4"></div>
+                <h2 id="member-name" class="text-3xl font-extrabold text-white mb-1"></h2>
+                <p id="member-role" class="text-xl text-gray-400 mb-4"></p>
+                <div class="border-t border-gray-700 pt-4">
+                    <p id="member-bio" class="text-gray-300 text-left mb-4"></p>
+                    <p class="text-sm text-gray-500">Contact: <a id="member-email-link" href="#" class="text-accent-color hover:underline"></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         // Team Data
         const teamMembers = [
@@ -360,115 +426,227 @@
             { id: 3, name: "Sakshi Verma", role: "Project Manager", initials: "S.V.", email: "sakshi.v@notchargeev.com", bio: "Sakshi coordinates all R&D and production phases, ensuring the project is completed on schedule." },
         ];
         
-        // Function to open the profile modal
+        // --- Modal Control Functions (Omitted for brevity) ---
+        function closeMobileMenu() { 
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+        function toggleModal(modalId, show) {
+            const modal = document.getElementById(modalId);
+            const content = modal.querySelector('.icard-modal');
+            if (show) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                content.classList.remove('translate-y-4');
+                document.body.classList.add('overflow-hidden');
+            } else {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                content.classList.add('translate-y-4');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
         function openProfileModal(memberId) {
-            const member = teamMembers.find(m => m.id === memberId);
+            const member = teamMembers.find(m => m.id == memberId);
             if (!member) return;
 
-            const modal = document.getElementById('profile-modal');
-            const modalContent = document.getElementById('modal-content');
-            const modalImage = document.getElementById('modal-image');
+            document.getElementById('member-initials').textContent = member.initials;
+            document.getElementById('member-name').textContent = member.name;
+            document.getElementById('member-role').textContent = member.role;
+            document.getElementById('member-bio').textContent = member.bio;
+            document.getElementById('member-email-link').textContent = member.email;
+            document.getElementById('member-email-link').href = `mailto:${member.email}`;
+            toggleModal('profile-modal', true);
+        }
+        function closeProfileModal() { toggleModal('profile-modal', false); }
+        function openLoginModal() { toggleModal('login-modal', true); }
+        function closeLoginModal() { toggleModal('login-modal', false); }
+        function openSignupModal() { toggleModal('signup-modal', true); }
+        function closeSignupModal() { toggleModal('signup-modal', false); }
+        function switchToSignup() { closeLoginModal(); setTimeout(() => openSignupModal(), 150); }
+        function switchToLogin() { closeSignupModal(); setTimeout(() => openLoginModal(), 150); }
 
-            // Populate Modal Data
-            document.getElementById('modal-name').textContent = member.name;
-            document.getElementById('modal-role').textContent = member.role;
-            document.getElementById('modal-bio').textContent = member.bio;
-            
-            const emailLink = document.getElementById('modal-email');
-            emailLink.textContent = member.email;
-            emailLink.href = `mailto:${member.email}`;
-            
-            // Set image source and initials for fallback
-            modalImage.src = `https://placehold.co/96x96/030712/06b6d4?text=${member.initials.replace('.', '').replace('.', '')}`;
-            modalImage.setAttribute('data-initials', member.initials.replace('.', '').replace('.', ''));
-            
-            // Show Modal with transition
-            modal.classList.remove('pointer-events-none');
-            modal.classList.add('opacity-100');
-            modalContent.classList.remove('translate-y-4');
+        // --- Chatbot Functions (Omitted for brevity) ---
+        let chatInitialized = false;
+        function toggleChatbot() {
+            const chatWindow = document.getElementById('chat-window');
+            const chatIconOpen = document.getElementById('chat-icon-open');
+            const chatIconClose = document.getElementById('chat-icon-close');
+
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden');
+                setTimeout(() => {
+                    chatWindow.classList.remove('scale-95', 'opacity-0');
+                }, 10); 
+                chatIconOpen.classList.add('hidden');
+                chatIconClose.classList.remove('hidden');
+            } else {
+                chatWindow.classList.add('scale-95', 'opacity-0');
+                chatIconOpen.classList.remove('hidden');
+                chatIconClose.classList.add('hidden');
+                setTimeout(() => {
+                    chatWindow.classList.add('hidden');
+                }, 300);
+            }
         }
 
-        // Function to close the profile modal
-        function closeProfileModal() {
-            const modal = document.getElementById('profile-modal');
-            const modalContent = document.getElementById('modal-content');
-            
-            modal.classList.remove('opacity-100');
-            modalContent.classList.add('translate-y-4');
+        function createMessageElement(text, sender) {
+            const div = document.createElement('div');
+            const isBot = sender === 'bot';
+            div.className = `flex ${isBot ? 'justify-start' : 'justify-end'}`;
+            div.innerHTML = `
+                <div class="max-w-xs px-4 py-2 rounded-xl text-sm ${
+                    isBot 
+                    ? 'bg-gray-700 text-white rounded-bl-none' 
+                    : 'bg-accent-color text-black rounded-br-none'
+                }">
+                    ${text}
+                </div>
+            `;
+            return div;
+        }
 
-            // Wait for transition to complete before disabling pointer events
+        function appendMessage(text, sender) {
+            const messages = document.getElementById('chat-messages');
+            const messageElement = createMessageElement(text, sender);
+            messages.appendChild(messageElement);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function sendUserMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('chat-input');
+            const userMessage = input.value.trim();
+
+            if (userMessage) {
+                appendMessage(userMessage, 'user');
+                input.value = '';
+                simulateBotResponse(userMessage);
+            }
+        }
+
+        function simulateBotResponse(userMessage) {
+            let botResponse = "Hello! I'm the NotChargeEV Assistant. I can tell you about our **auto-recharge technology**, **pricing**, or **team**.";
+            userMessage = userMessage.toLowerCase();
+
+            if (userMessage.includes('price') || userMessage.includes('cost')) {
+                botResponse = "The expected ex-showroom price for NotChargeEV is **₹10-15 Lakh** (tentative), making advanced EV tech affordable!";
+            } else if (userMessage.includes('range') || userMessage.includes('recharge') || userMessage.includes('battery')) {
+                botResponse = "Our patented **Advanced Alternator System** provides **unlimited effective range** by continuously recharging the battery while driving. Say goodbye to range anxiety!";
+            } else if (userMessage.includes('team') || userMessage.includes('founder')) {
+                botResponse = "We are led by our visionary founder, **Romanshu Sharma**, and a dedicated team of Indian innovators focused on sustainable mobility.";
+            } else if (userMessage.includes('hello') || userMessage.includes('hi')) {
+                botResponse = "Hello there! How can I assist you with your NotChargeEV query today?";
+            }
+
             setTimeout(() => {
-                modal.classList.add('pointer-events-none');
-            }, 300);
+                appendMessage(botResponse, 'bot');
+            }, 1000);
         }
+        
+        // --- Scroll Effect JS ---
+        function handleScrollEffect() {
+            const scrollHoverText = document.querySelector('.scroll-hover');
+            if (window.scrollY > 150) { 
+                scrollHoverText.classList.add('scrolled-text-effect');
+            } else {
+                scrollHoverText.classList.remove('scrolled-text-effect');
+            }
+        }
+        
+        // --- Handle Form Submission After Iframe Load (UPDATED MESSAGE) ---
+        function handleFormSubmission() {
+            const form = document.getElementById('preorder-form');
+            if (!form || form.dataset.submitted !== 'true') {
+                 // Ignore initial iframe load
+                 return;
+            }
+
+            const messageArea = document.getElementById('form-message-area');
+            const submitButton = document.getElementById('submit-button');
+            const submissionWarning = document.getElementById('submission-warning');
+
+            // 1. Display the NEW attractive success message
+            messageArea.innerHTML = `
+                <div class="text-2xl font-bold text-neon mb-2">⚡️ Registration Confirmed!</div>
+                <p class="text-gray-300">You've secured your spot on the pre-order list and are one step closer to embracing the future of mobility. We will send you exclusive launch updates and next steps soon!</p>
+                <p class="mt-4 text-sm text-gray-500">Thank you for joining the revolution.</p>
+            `;
+            
+            // 2. Hide input fields
+            form.querySelectorAll('input').forEach(el => {
+                 el.style.display = 'none';
+            });
+            
+            submissionWarning.classList.add('hidden');
+
+            // 3. Update and style the button
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Registered Successfully';
+            submitButton.classList.remove('text-accent-color', 'hover:bg-gray-800');
+            submitButton.classList.add('bg-green-600', 'text-black', 'cursor-default');
+            
+            // 4. Scroll down to the message area
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            form.dataset.submitted = 'false';
+        }
+        
+        // Expose function globally for the iframe's onload attribute
+        window.handleFormSubmission = handleFormSubmission;
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-            const form = document.querySelector('form');
-            const submissionMessage = document.getElementById('submission-message');
             const teamContainer = document.getElementById('team-container');
-            
-            // Expose modal functions globally since they are called from inline HTML
+            const preorderForm = document.getElementById('preorder-form');
+            const submissionWarning = document.getElementById('submission-warning');
+
+            // Expose global functions
+            window.closeMobileMenu = closeMobileMenu;
             window.openProfileModal = openProfileModal;
             window.closeProfileModal = closeProfileModal;
-
-            // 1. Render Team Cards Dynamically
-            teamMembers.forEach(member => {
-                const cardHtml = `
-                    <div class="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-800 transition duration-300 transform hover:scale-[1.03] cursor-pointer" onclick="openProfileModal(${member.id})">
-                        <img src="https://placehold.co/96x96/0f172a/06b6d4?text=${member.initials.replace('.', '').replace('.', '')}" 
-                            alt="Profile photo of ${member.name}" 
-                            class="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-2 border-accent-color/50"
-                            onerror="this.onerror=null; this.src='https://placehold.co/96x96/0f172a/06b6d4?text=${member.initials.replace('.', '').replace('.', '')}'">
-                        <h3 class="text-xl font-semibold text-white">${member.name}</h3>
-                        <p class="text-accent-color">${member.role}</p>
-                        <p class="text-sm text-gray-400 mt-2">Full-time</p>
-                    </div>
-                `;
-                teamContainer.innerHTML += cardHtml;
+            window.openLoginModal = openLoginModal;
+            window.closeLoginModal = closeLoginModal;
+            window.openSignupModal = openSignupModal;
+            window.closeSignupModal = closeSignupModal;
+            window.switchToSignup = switchToSignup;
+            window.switchToLogin = switchToLogin;
+            window.toggleChatbot = toggleChatbot; 
+            window.addEventListener('scroll', handleScrollEffect);
+            
+            // Form Submission Listener 
+            preorderForm.addEventListener('submit', (e) => {
+                // Set flag before submitting to the iframe
+                preorderForm.dataset.submitted = 'true'; 
+                submissionWarning.classList.remove('hidden');
             });
-
+            
+            // 1. Render Team Cards Dynamically
+            const teamCards = teamMembers.map(member => `
+                <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 flex flex-col items-center cursor-pointer hover:border-accent-color transition duration-300" 
+                     onclick="openProfileModal(${member.id})">
+                    <div class="w-16 h-16 bg-accent-color text-black text-2xl font-bold rounded-full flex items-center justify-center mb-3">
+                        ${member.initials}
+                    </div>
+                    <h3 class="text-xl font-semibold text-white">${member.name}</h3>
+                    <p class="text-gray-400 text-sm">${member.role}</p>
+                </div>
+            `).join('');
+            if(teamContainer) teamContainer.innerHTML = teamCards;
 
             // 2. Mobile Menu Toggle
             mobileMenuButton.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
             });
-            
-            // Close menu when a link is clicked
             mobileMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                });
+                link.addEventListener('click', closeMobileMenu);
             });
 
-            // 3. Mock Form Submission
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const submitButton = form.querySelector('button[type="submit"]');
-
-                // Simulate API call/processing time
-                submitButton.textContent = 'Processing...';
-                submitButton.disabled = true;
-                
-                setTimeout(() => {
-                    // Reset form and show success message
-                    document.getElementById('name').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('city').value = '';
-
-                    submitButton.textContent = 'Join the Pre-Order List';
-                    submitButton.disabled = false;
-                    
-                    submissionMessage.classList.remove('hidden');
-                    
-                    // Hide message after a few seconds
-                    setTimeout(() => {
-                        submissionMessage.classList.add('hidden');
-                    }, 5000);
-
-                }, 1500); // 1.5 second delay
-            });
+            // 3. Chatbot Initialization
+            function setInitialMessages() {
+                appendMessage("Hello! I'm the NotChargeEV Assistant. I can tell you about our **auto-recharge technology**, **pricing**, or **team**.", 'bot');
+            }
+            setInitialMessages();
+            document.getElementById('chat-form').addEventListener('submit', sendUserMessage);
         });
     </script>
 </body>
