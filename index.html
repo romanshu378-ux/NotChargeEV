@@ -18,6 +18,47 @@
             background-color: var(--background-color);
             color: #f3f4f6;
         }
+        
+        /* --- Slideshow CSS for Animated Background (REVISED) --- */
+        #slideshow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-color: var(--background-color);
+        }
+
+        .mySlides {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        
+        /* Reliable Dark Overlay using pseudo-element */
+        .mySlides::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(3, 7, 18, 0.85); /* Dark background with opacity */
+            z-index: 1; 
+        }
+
+        .mySlides.active {
+            opacity: 1;
+        }
+
+        /* --- END: Slideshow CSS --- */
+
+
         /* text-neon: text-shadow property removed as requested */
         .text-neon {
             color: var(--accent-color);
@@ -119,7 +160,12 @@
     </header>
 
     <main>
-        <section id="hero" class="py-20 md:py-32 lg:py-40 text-center bg-background-color relative overflow-hidden border-b border-gray-900">
+        <section id="hero" class="py-20 md:py-32 lg:py-40 text-center relative overflow-hidden border-b border-gray-900">
+            <div id="slideshow-container">
+                <div class="mySlides fade active" style="background-image: url('https://images.unsplash.com/photo-1571407914407-427f71587d5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMDAwMzh8MHwxfHNlYXJjaHw0fHxlbGVjdHJpYyUyMGNhciUyMGRhcmslMjBjb25jZXB0fGVufDB8fHx8MTcwMzU3NzI3NXww&ixlib=rb-4.0.3&q=80&w=1920')"></div>
+                <div class="mySlides fade" style="background-image: url('https://images.unsplash.com/photo-1627806506306-03c706d4e5d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMDAwMzh8MHwxfHNlYXJjaHwzfHxlbGVjdHJpYyUyMGNhciUyMGRhcmslMjBjb25jZXB0fGVufDB8fHx8MTcwMzU3NzI3NXww&ixlib=rb-4.0.3&q=80&w=1920')"></div>
+                <div class="mySlides fade" style="background-image: url('https://images.unsplash.com/photo-1639352668512-632008f1b637?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMDAwMzh8MHwxfHNlYXJjaHw1fHxlbGVjdHJpYyUyMGNhciUyMGRhcmslMjBjb25jZXB0fGVufDB8fHx8MTcwMzU3NzI3NXww&ixlib=rb-4.0.3&q=80&w=1920')"></div>
+            </div>
             <div class="max-w-5xl mx-auto px-4 relative z-10">
                 <p class="text-lg uppercase tracking-widest text-gray-500 mb-4">The Future of Electric Driving</p>
                 <h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight mb-6">
@@ -205,7 +251,13 @@
                 <div class="max-w-4xl mx-auto mb-12">
                     
 
+
+
+
+
 [Image of Schematic Diagram of Self-Charging EV Alternator]
+
+
 
                 </div>
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -399,7 +451,9 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div class="text-center">
-                <div id="member-initials" class="w-20 h-20 mx-auto bg-accent-color text-black text-3xl font-bold rounded-full flex items-center justify-center mb-4"></div>
+                
+                <div id="member-image-placeholder" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4">
+                    </div>
                 <h2 id="member-name" class="text-3xl font-extrabold text-white mb-1"></h2>
                 <p id="member-role" class="text-xl text-gray-400 mb-4"></p>
                 <div class="border-t border-gray-700 pt-4">
@@ -412,14 +466,14 @@
 
 
     <script>
-        // Team Data
+        // --- Team Data (UPDATED with placeholder images) ---
         const teamMembers = [
-            { id: 1, name: "Romanshu Sharma", role: "Founder & CEO", initials: "R.S.", email: "romanshu.s@notchargeev.com", bio: "Romanshu provides the vision and leadership for the company. Holds deep expertise in EV technology and the Indian market." },
-            { id: 2, name: "Khushbu Sharma", role: "Co-Founder & CTO", initials: "K.S.", email: "khushbu.s@notchargeev.com", bio: "Khushbu manages technical strategy, prototype development, and the patented alternator system." },
-            { id: 3, name: "Sakshi Verma", role: "Project Manager", initials: "S.V.", email: "sakshi.v@notchargeev.com", bio: "Sakshi coordinates all R&D and production phases, ensuring the project is completed on schedule." },
+            { id: 1, name: "Romanshu Sharma", role: "Founder", initials: "R.S.", email: "romanshu.s@notchargeev.com", bio: "Romanshu provides the vision and leadership for the company. Holds deep expertise in EV technology and the Indian market.", imageUrl: "https://images.unsplash.com/photo-1544717305-ad2d174b94f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMDAwMzh8MHwxfHNlYXJjaHw3fHxJbmRpYW4lMjBmb3VuZGVyJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzAzNTc3MzQzfDA&ixlib=rb-4.0.3&q=80&w=200" },
+            { id: 2, name: "Raghav Sharma", role: "Co-Founder", initials: "R.S.", email: "raghav.s@notchargeev.com", bio: "Raghav Sharma manages technical strategy, prototype development, and the patented alternator system.", imageUrl: "https://images.unsplash.com/photo-1628157500122-d52f6d2f3c3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMDAwMzh8MHwxfHNlYXJjaHwyMHx8SW5kaWFuJTIwbWFuJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzAzNTc3NDMxfDA&ixlib=rb-4.0.3&q=80&w=200" },
+            { id: 3, name: "Gunjan Sharma", role: "CEO", initials: "G.S.", email: "gunjan.v@notchargeev.com", bio: "Gunjan coordinates all R&D and production phases, ensuring the project is completed on schedule.", imageUrl: "https://images.unsplash.com/photo-1645378897537-8317af301297?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMDAwMzh8MHwxfHNlYXJjaHwyMHx8SW5kaWFuJTIwd29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3MDM1Nzc0NTJ8MA&ixlib=rb-4.0.3&q=80&w=200" },
         ];
         
-        // --- Modal Control Functions (Omitted for brevity) ---
+        // --- Modal Control Functions ---
         function closeMobileMenu() { 
             document.getElementById('mobile-menu').classList.add('hidden');
         }
@@ -436,11 +490,26 @@
                 document.body.classList.remove('overflow-hidden');
             }
         }
+        
+        // --- Profile Modal Function (UPDATED) ---
         function openProfileModal(memberId) {
             const member = teamMembers.find(m => m.id == memberId);
             if (!member) return;
 
-            document.getElementById('member-initials').textContent = member.initials;
+            const imagePlaceholder = document.getElementById('member-image-placeholder');
+            imagePlaceholder.innerHTML = ''; // Clear existing content
+
+            if (member.imageUrl) {
+                // Display Image
+                imagePlaceholder.className = "w-20 h-20 mx-auto rounded-full overflow-hidden mb-4 border-4 border-accent-color";
+                imagePlaceholder.innerHTML = `<img src="${member.imageUrl}" alt="${member.name}" class="object-cover w-full h-full">`;
+            } else {
+                // Display Initials if no image
+                 imagePlaceholder.className = "w-20 h-20 mx-auto bg-accent-color text-black text-3xl font-bold rounded-full flex items-center justify-center mb-4";
+                imagePlaceholder.textContent = member.initials;
+            }
+
+
             document.getElementById('member-name').textContent = member.name;
             document.getElementById('member-role').textContent = member.role;
             document.getElementById('member-bio').textContent = member.bio;
@@ -448,6 +517,8 @@
             document.getElementById('member-email-link').href = `mailto:${member.email}`;
             toggleModal('profile-modal', true);
         }
+        // --- END Profile Modal Function ---
+        
         function closeProfileModal() { toggleModal('profile-modal', false); }
         function openLoginModal() { toggleModal('login-modal', true); }
         function closeLoginModal() { toggleModal('login-modal', false); }
@@ -523,7 +594,7 @@
                 botResponse = "The expected ex-showroom price for NotChargeEV is **₹10-15 Lakh** (tentative), making advanced EV tech affordable!";
             } else if (userMessage.includes('range') || userMessage.includes('recharge') || userMessage.includes('battery')) {
                 botResponse = "Our patented **Advanced Alternator System** provides **unlimited effective range** by continuously recharging the battery while driving. Say goodbye to range anxiety!";
-            } else if (userMessage.includes('team') || userMessage.includes('founder')) {
+            } else if (userMessage.includes('team') || userMessage.includes('who is founder of notchargeev')) {
                 botResponse = "We are led by our visionary founder, **Romanshu Sharma**, and a dedicated team of Indian innovators focused on sustainable mobility.";
             } else if (userMessage.includes('hello') || userMessage.includes('hi')) {
                 botResponse = "Hello there! How can I assist you with your NotChargeEV query today?";
@@ -544,7 +615,7 @@
             }
         }
         
-        // --- Handle Form Submission After Iframe Load (UPDATED MESSAGE) ---
+        // --- Handle Form Submission After Iframe Load ---
         function handleFormSubmission() {
             const form = document.getElementById('preorder-form');
             if (!form || form.dataset.submitted !== 'true') {
@@ -586,6 +657,35 @@
         window.handleFormSubmission = handleFormSubmission;
 
 
+        // --- Slideshow Logic ---
+        let slideIndex = 0; // Start at 0, which means the first call to showSlides will correctly move to slide 1
+        const SHOW_TIME = 5000; // 5 seconds
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("mySlides");
+            
+            if (slides.length === 0) {
+                 setTimeout(showSlides, 100); 
+                 return;
+            }
+
+            // 1. Reset all slides
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            // 2. Increment index, reset if at the end (Modulo arithmetic for clean looping)
+            slideIndex = (slideIndex % slides.length) + 1;
+            
+            // 3. Activate the current slide (index is 1-based, array is 0-based)
+            slides[slideIndex - 1].classList.add('active');
+            
+            // 4. Call the function again after SHOW_TIME milliseconds
+            setTimeout(showSlides, SHOW_TIME); 
+        }
+        // --- END: Slideshow Logic ---
+
+
         document.addEventListener('DOMContentLoaded', () => {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -613,13 +713,20 @@
                 submissionWarning.classList.remove('hidden');
             });
             
-            // 1. Render Team Cards Dynamically
+            // 1. Render Team Cards Dynamically (UPDATED TO INCLUDE IMAGE)
             const teamCards = teamMembers.map(member => `
                 <div class="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-800 flex flex-col items-center cursor-pointer hover:border-accent-color transition duration-300" 
                      onclick="openProfileModal(${member.id})">
-                    <div class="w-16 h-16 bg-accent-color text-black text-2xl font-bold rounded-full flex items-center justify-center mb-3">
-                        ${member.initials}
-                    </div>
+                    
+                    ${member.imageUrl ? `
+                        <div class="w-24 h-24 rounded-full overflow-hidden mb-3 border-4 border-accent-color">
+                            <img src="${member.imageUrl}" alt="${member.name}" class="object-cover w-full h-full">
+                        </div>
+                    ` : `
+                        <div class="w-24 h-24 bg-accent-color text-black text-3xl font-bold rounded-full flex items-center justify-center mb-3">
+                            ${member.initials}
+                        </div>
+                    `}
                     <h3 class="text-xl font-semibold text-white">${member.name}</h3>
                     <p class="text-gray-400 text-sm">${member.role}</p>
                 </div>
@@ -640,6 +747,9 @@
             }
             setInitialMessages();
             document.getElementById('chat-form').addEventListener('submit', sendUserMessage);
+
+            // 4. Start the Slideshow
+            showSlides(); 
         });
     </script>
 </body>
